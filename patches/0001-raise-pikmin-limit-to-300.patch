@@ -1,0 +1,28 @@
+diff --git a/include/Game/Piki.h b/include/Game/Piki.h
+index 30cb995..40a2322 100644
+--- a/include/Game/Piki.h
++++ b/include/Game/Piki.h
+@@ -7,7 +7,7 @@
+ #include "Game/FakePiki.h"
+ #include "Game/StateMachine.h"
+ 
+-#define MAX_PIKI_COUNT (100) // Maximum number of pikmin allowed out of the onyon/in a cave
++#define MAX_PIKI_COUNT (300) // Maximum number of pikmin allowed out of the onyon/in a cave (vanilla: 100)
+ 
+ namespace efx {
+ struct Context;
+diff --git a/src/plugProjectOgawaU/ogObjContena.cpp b/src/plugProjectOgawaU/ogObjContena.cpp
+index f71c622..f9b7247 100644
+--- a/src/plugProjectOgawaU/ogObjContena.cpp
++++ b/src/plugProjectOgawaU/ogObjContena.cpp
+@@ -210,7 +210,9 @@ void ObjContena::doCreate(JKRArchive* arc)
+ 
+ 	mPikiPaneNum = 0;
+ 
+-	for (int i = 0; i < MAX_PIKI_COUNT; i++) {
++	// The layout's pane tags only encode two digits (Piki_00..Piki_99), so this stays at 100
++	// regardless of MAX_PIKI_COUNT; counting further would wrap around and double-count panes.
++	for (int i = 0; i < 100; i++) {
+ 		u64 tag = 'Piki_00' + (i % 10) + (i / 10) % 10 * 256;
+ 		if (!mContena->search(tag))
+ 			break;
